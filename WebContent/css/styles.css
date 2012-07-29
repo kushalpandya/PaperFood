@@ -1,0 +1,57 @@
+@CHARSET "UTF-8";
+
+* {
+	margin: 0;
+	padding: 0;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", "Droid Sans", sans-serif;
+}
+
+body {
+	background: repeat url("../assets/bg.png");
+}
+
+.shade-north {
+	display: block;
+	position: fixed;
+	background: transparent;
+	width: 100%;
+	height: 10px;
+	margin-top: -10px;
+	box-shadow: 0 0 30px #000;
+	-webkit-transition: all .3s;
+	-moz-transition: all .3s;
+	-ms-transition: all .3s;
+	-o-transition: all .3s;
+}
+
+.shade-south {
+	display: block;
+	position: fixed;
+	background: transparent;
+	width: 100%;
+	height: 10px;
+	top: 100%;
+	box-shadow: 0 0 30px #000;
+}
+.shade-east {
+	display: block;
+	position: fixed;
+	background: transparent;
+	width: 10px;
+	left: -10px;
+	height: 100%;
+	box-shadow: 0 0 30px #000;
+}
+.shade-west {
+	display: block;
+	position: fixed;
+	background: transparent;
+	width: 10px;
+	right: -10px;
+	height: 100%;
+	box-shadow: 0 0 30px #000;
+}
+
+.logo-text {
+	text-shadow: 0 1px 0 #A69C80, 0 2px 0 #c9c9c9, 0 3px 0 #A69C80, 0 1px 0 #A69C80, 0 2px 0 #A69C80, 0 2px 1px rgba(0,0,0,.1), 0 0 2px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.3), 0 2px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 3px 3px rgba(0,0,0,.2), 0 5px 5px rgba(0,0,0,.15);
+}

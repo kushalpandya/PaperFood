@@ -1,5 +1,135 @@
-* {
+@import "CSS3.less";
+
+.container {
+	padding-top: 8%;
+}
+
+.logo {
+	margin: auto;
+	margin-bottom: 8%;
+}
+
+.logo-text {
+	margin: auto;
+	font-size: 50px;
+	font-weight: bolder;
+	color: #F7F7F7;
+	text-align: center;
+	font-style: oblique;
+}
+
+.btn-search {
+	height: 40px;
+	width: 150px;
+	font-size: 18px;
 	margin: 0;
-	padding: 0;
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", "Droid Sans", sans-serif;
+}
+
+.cupboard-area {
+	margin: auto;
+}
+
+.btn-cupboard {
+	margin: auto;
+	width: 300px;
+	height: 40px;
+	font-size: 18px;
+}
+
+.txt-search {
+	height: 30px;
+	width: 400px;
+	font-size: 18px;
+	margin: 0;
+	
+	background-color: #6B6B6B;
+	border-color: darken(#6B6B6B, 20%);
+	.box-shadow-inset(3px,3px,8px, darken(#6B6B6B, 20%));
+	
+	&:focus {
+		.box-shadow(0px,0px,0px);
+		.box-shadow-inset(2px,2px,4px, darken(#6B6B6B, 20%));
+		border-color: darken(#6B6B6B, 20%);
+		background-color: #ECECEC;
+	}
+}
+
+.main-label {
+	margin-top: 2%;
+	margin-bottom: 2%;
+}
+
+.main-label-text {
+	font-size: 25px;
+	color: #fff;
+	text-align: center;
+	font-weight: bold;
+}
+
+.headerbar
+{
+	@basecolor: #C4D3D9;
+	
+    width: 100%;
+    position: absolute;
+    height: 100px;
+    top: 0;
+    
+    .headerbar-box {
+        display: block;
+        background-color: @basecolor;
+        .simple-linear-gradient(@basecolor,darken(@basecolor,5%));
+        height: 60px;
+        border-bottom-right-radius: 8px;
+        border-bottom-left-radius: 8px;
+    }
+    .headerbar-right {
+        .headerbar-box();
+        width: 150px;
+        float: right;
+        margin-right: 50px;
+        .headerbar-buttons {
+            margin: auto;
+            margin-top: 11%;
+            width: 80%;
+            a {
+                outline: none;
+                height: 25px;
+                line-height: 25px;
+                width: 100px;
+                font-size: 16px;
+                color: #F7F7F7;
+                /*.simple-linear-gradient(darken(@basecolor,10%),darken(@basecolor,20%));*/
+            }
+        } 
+    }
+}
+
+.registration-form {
+   	display: none;
+   	margin: auto;
+  	padding-top: 2%;
+   	background-color: #C4D3D9;
+	.box-shadow(0px,0px,25px);
+	
+	.span12 {
+		margin: auto;
+	}
+	
+	.control-label {
+		font-size: 16px;
+	}
+	
+	.input-xlarge {
+		font-size: 16px;
+	}
+	
+	.form-actions {
+		background-color: #C4D3D9;
+		border: 0;
+	}
+}
+
+.form-horizontal, .form-actions {
+	margin: 0;
 }
