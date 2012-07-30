@@ -1,0 +1,29 @@
+PaperFood Minimal Database
+--------------------------
+
+- users
+	- u_id [PK]
+	- fname
+	- lname
+	- email
+	- password
+
+- books
+	- b_id [PK]
+	- isbn
+	- title
+	- author
+	- genre
+	- qty
+	- price
+
+- orders
+	- o_id [PK]
+	- u_id [FK]
+	- order_date
+	- status
+
+- orders_detail
+	- o_id [FK]
+	- b_id [FK]
+	- qty

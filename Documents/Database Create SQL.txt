@@ -1,0 +1,48 @@
+PaperFood Database Queries
+--------------------------
+
+users
+-----
+
+CREATE TABLE users(
+	u_id int NOT NULL PRIMARY KEY,
+	fname varchar(30),
+	lname varchar(30),
+	email varchar(30),
+	password varchar(32)
+);
+
+books
+-----
+
+CREATE TABLE books(
+	b_id int NOT NULL PRIMARY KEY,
+	isbn varchar(30),
+	title varchar(30),
+	author varchar(30),
+	genre varchar(30),
+	qty int,
+	price real
+);
+
+orders
+------
+
+CREATE TABLE orders(
+	o_id int NOT NULL PRIMARY KEY,
+	u_id int,
+	order_date date,
+	status varchar(30),
+	FOREIGN KEY(u_id) REFERENCES users(u_id)
+);
+
+orders_detail
+-------------
+
+CREATE TABLE orders_detail(
+	o_id int,
+	b_id int,
+	qty int,
+	FOREIGN KEY(o_id) REFERENCES orders(o_id),
+	FOREIGN KEY(b_id) REFERENCES books(b_id)
+);
