@@ -5,7 +5,7 @@ users
 -----
 
 CREATE TABLE users(
-	u_id int NOT NULL PRIMARY KEY,
+	u_id int NOT NULL PRIMARY KEY AUTOINCREMENT,
 	fname varchar(30),
 	lname varchar(30),
 	email varchar(30),
@@ -16,7 +16,7 @@ books
 -----
 
 CREATE TABLE books(
-	b_id int NOT NULL PRIMARY KEY,
+	b_id int NOT NULL PRIMARY KEY AUTOINCREMENT,
 	isbn varchar(30),
 	title varchar(30),
 	author varchar(30),
@@ -29,7 +29,7 @@ orders
 ------
 
 CREATE TABLE orders(
-	o_id int NOT NULL PRIMARY KEY,
+	o_id int NOT NULL PRIMARY KEY AUTOINCREMENT,
 	u_id int,
 	order_date date,
 	status varchar(30),
