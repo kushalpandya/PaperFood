@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.ResourceBundle;
@@ -124,6 +125,39 @@ public class DatabaseManager
 			pst.executeUpdate();
 		}
 		pst.close();
+	}
+	
+	/**
+	 * Gets array of PaperFoodBook object based on given criteria, if criteria is "none", all books will be returned.
+	 * @param criteria Criteria for filtering books, "none" for all books, or filter query for filter.
+	 * @return PaperFoodBook[] for given criteria.
+	 * @throws SQLException
+	 */
+	public PaperFoodBook[] getBooks(String criteria) throws SQLException
+	{
+		if(criteria.equalsIgnoreCase("none"))
+		{
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("SELECT * FROM books");
+			ArrayList<PaperFoodBook> books = new ArrayList<>();
+			PaperFoodBook temp_book;
+			while(rs.next())
+			{
+				temp_book = new PaperFoodBook();
+				temp_book.setId(rs.getInt("b_id"));
+				temp_book.setISBN(rs.getString("isbn"));
+				temp_book.setTitle(rs.getString("title"));
+				temp_book.setAuthor(rs.getString("author"));
+				temp_book.setGenre(rs.getString("genre"));
+				temp_book.setQuantity(rs.getInt("qty"));
+				temp_book.setPrice(rs.getFloat("price"));
+				
+				books.add(temp_book);
+			}
+			return books.toArray(new PaperFoodBook[books.size()]);
+		}
+		else
+			return null;
 	}
 	
 	/**

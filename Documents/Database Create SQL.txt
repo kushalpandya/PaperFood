@@ -20,7 +20,7 @@ CREATE TABLE books(
 	isbn varchar(30),
 	title varchar(30),
 	author varchar(30),
-	genre varchar(30),
+	genre varchar(100),
 	qty integer,
 	price real
 );
@@ -71,7 +71,7 @@ CREATE TABLE books(
 	isbn varchar(30),
 	title varchar(30),
 	author varchar(30),
-	genre varchar(30),
+	genre varchar(100),
 	qty int(3),
 	price numeric(6,2),
 	PRIMARY KEY (b_id)

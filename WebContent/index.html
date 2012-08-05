@@ -26,7 +26,8 @@
 	        gravity: 'w'
 	    });
 		
-		
+		if(window.location.hash.substring(1) === "bookshelf")
+			$("#btnShowBookshelf").trigger("click");
 	});
 </script>
 </head>
@@ -134,9 +135,12 @@
 			</span>
 			<div id="bookshelf" class="span12">
 				<script id="shelf-items" type="text/x-handlebars-template">
-					<h1>{{bookTitle}}</h1>
+					{{#each this}}
+					<img src="assets/covers/{{isbn}}.jpg" alt="{{title}}" width="100px" height="150px"/>
+					<h1>{{title}}</h1>
 					<h2>{{author}}</h2>
 					<h2>{{genre}}</h2>
+					{{/each}}
 				</script>
 			</div>
 		</div>

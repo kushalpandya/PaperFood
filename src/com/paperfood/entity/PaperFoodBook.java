@@ -3,6 +3,9 @@
  */
 package com.paperfood.entity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * @author Kushal Pandya <kushal.pandya04@gmail.com>
  *
@@ -114,5 +117,24 @@ public class PaperFoodBook
 	public void setPrice(float price)
 	{
 		this.price = price;
+	}
+	
+	/**
+	 * Gets JSONObject representing this Object.
+	 * @return JSONObject
+	 * @throws JSONException
+	 */
+	public JSONObject toJSONObject() throws JSONException
+	{
+		JSONObject obj = new JSONObject();
+		obj.put("id", this.id);
+		obj.put("isbn", this.isbn);
+		obj.put("title", this.title);
+		obj.put("author", this.author);
+		obj.put("genre", this.genre);
+		obj.put("qty", this.quantity);
+		obj.put("price", this.price);
+		
+		return obj;
 	}
 }

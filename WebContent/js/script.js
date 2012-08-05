@@ -2,8 +2,8 @@ var regExAlphabet = /^\D\w*$/;
 var regExEmail = /^(.+)@(.+)$/;
 var regExPassword = /^.{8,}$/;
 var shelfTemplate = Handlebars.compile($("#shelf-items").html());
-var shelfContent = { bookTitle : "It wasn't a friendship...", author : "Kushal Pandya", genre : "Romance, Drama, Comedy" };
 
+var hashShelf = "bookshelf";
 
 var signupSym = $("#signup").find(".btn-symbol");
 
@@ -136,7 +136,31 @@ $("#btnShowBookshelf").on("click", function() {
 	$("#searchbox").slideLeftHide(function() {
 		//$("#loading").fadeIn();
 		//$("#loading").fadeOut();
-		$("#bookshelf").fadeIn().html(shelfTemplate(shelfContent));
+		window.location.hash = hashShelf;
+		$.post("BooksCatalog", {
+			type : "none"
+		},
+		function(data) {
+			if(data.type === "catalog")
+				$("#bookshelf").fadeIn().html(shelfTemplate(data.catalog));
+		});
 	});
 });
+
+function getLocationHash() {
+	  return window.location.hash.substring(1);
+}
+
+window.onhashchange = function(e) {
+	switch(getLocationHash())
+	{
+		case "": //No Hash
+			$("#bookshelf").fadeOut(function() {
+				$("#searchbox").fadeIn();
+			});
+			break;
+	    default: 
+	    	break;
+	}
+};
 
