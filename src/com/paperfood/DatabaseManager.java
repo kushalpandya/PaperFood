@@ -142,6 +142,58 @@ public class DatabaseManager
 	}
 	
 	/**
+	 * Checks if given email address exists in users table.
+	 * @param email User email to be checked for.
+	 * @return boolean whether email exists.
+	 * @throws SQLException
+	 */
+	public boolean isUserMailExist(String email) throws SQLException
+	{
+		PreparedStatement pst = con.prepareStatement("SELECT * FROM users WHERE email = ?");
+		pst.setString(1, email);
+		ResultSet rs = pst.executeQuery();
+		if(rs.next())
+		{
+			rs.close();
+			pst.close();
+			return true;
+		}
+		else
+		{
+			rs.close();
+			pst.close();
+			return false;
+		}
+	}
+	
+	/**
+	 * Returns PaperFoodUser object if Login email and password matches with anyone in the database.
+	 * @param email Address of login user.
+	 * @param password MD5 hash of password sent from user.
+	 * @return PaperFoodUser object is login is valid, null if invalid.
+	 * @throws SQLException
+	 */
+	public Object getLoggedUser(String email, String password) throws SQLException
+	{
+		PreparedStatement pst = con.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
+		pst.setString(1, email);
+		pst.setString(2, password);
+		ResultSet rs = pst.executeQuery();
+		if(rs.next())
+		{
+			PaperFoodUser user = new PaperFoodUser();
+			user.setId(rs.getInt("u_id"));
+			user.setFirstName(rs.getString("fname"));
+			user.setLastName(rs.getString("lname"));
+			user.setEmail(rs.getString("email"));
+			
+			return user;
+		}
+		else
+			return null;
+	}
+	
+	/**
 	 * Closes this connection with PaperFood Database.
 	 * @throws SQLException
 	 */

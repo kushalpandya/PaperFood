@@ -12,7 +12,10 @@
 <link rel="stylesheet/less" href="css/styles.less" media="all" />
 <script type="text/javascript" src="js/less-1.3.0.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.extensions.js"></script>
+<script type="text/javascript" src="js/handlebars.min.js"></script>
 <script type="text/javascript" src="js/jquery.tipsy.min.js"></script>
+<script type="text/javascript" src="js/jsonify.js"></script>
 <script type="text/javascript">
 	$(function() {
 		less.env = "development";
@@ -22,6 +25,8 @@
 	        trigger: 'focus', 
 	        gravity: 'w'
 	    });
+		
+		
 	});
 </script>
 </head>
@@ -33,42 +38,42 @@
 	<div class="headerbar">
 		<div class="registration-form row-fluid">
 			<div class="span3">&nbsp;</div>
-			<form class="form-horizontal span6">
+			<form id="registerform" class="form-horizontal span6">
         		<fieldset>
          			<div class="control-group">
             			<label class="control-label" for="txtFname">First Name</label>
             			<div class="controls">
-              				<input type="text" class="input-xlarge" original-title="Your First Name, must start with alphabets, followed by any character." id="txtFname">
+              				<input type="text" class="input-xlarge" original-title="Your First Name, must start with alphabets, followed by any character." name="txtFname">
             			</div>
           			</div>
           			<div class="control-group">
             			<label class="control-label" for="txtLname">Last Name</label>
             			<div class="controls">
-              				<input type="text" class="input-xlarge" original-title="Your Last Name, must start with alphabets, followed by any character." id="txtLname">
+              				<input type="text" class="input-xlarge" original-title="Your Last Name, must start with alphabets, followed by any character." name="txtLname">
             			</div>
           			</div>
           			<div class="control-group">
             			<label class="control-label" for="txtEmail">Email</label>
             			<div class="controls">
-              				<input type="text" class="input-xlarge" original-title="Your primary email address." id="txtEmail">
+              				<input type="text" class="input-xlarge" original-title="Your primary email address." name="txtEmail">
             			</div>
           			</div>
           			<div class="control-group">
             			<label class="control-label" for="txtPass">Password</label>
             			<div class="controls">
-              				<input type="password" class="input-xlarge" original-title="Choose a strong password which has A-z, 1-0, symbols & is 8 characters long." id="txtPass">
+              				<input type="password" class="input-xlarge" original-title="Choose a strong password which has A-z, 1-0, symbols & is 8 characters long." name="txtPass">
               				<p class="help-block">Choose a strong password.</p>
             			</div>
           			</div>
           			<div class="control-group">
             			<label class="control-label" for="txtCPass">Confirm Password</label>
             			<div class="controls">
-              				<input type="password" class="input-xlarge" original-title="Confirm your password." id="txtCPass">
+              				<input type="password" class="input-xlarge" original-title="Confirm your password." name="txtCPass">
             			</div>
           			</div>
           			<div class="form-actions">
-            			<button type="submit" class="btn btn-primary">Register</button>
-            			<button type="reset" class="btn" id="btnrst">Clear Form</button>
+            			<button type="submit" class="btn btn-primary" id="btnSubmit">Register</button>
+            			<button type="reset" class="btn" id="btnReset">Clear Form</button>
           			</div>
         		</fieldset>
       		</form>
@@ -91,7 +96,8 @@
       		</form>
 		</div>
 	</div>
-	<div class="container">
+	
+	<div id="searchbox" class="container">
 		<div class="row-fluid logo">
 			<div class="span3">&nbsp;</div>
 			<div class="span6 logo-text">PaperFood</div>
@@ -115,9 +121,24 @@
 		<div class="row-fluid cupboard-area">
 			<div class="span4">&nbsp;</div>
 			<div class="span4" style="text-align: center;">
-				<button class="btn btn-inverse btn-cupboard">&#9112; Show Bookshelf</button>
+				<button class="btn btn-inverse btn-cupboard" id="btnShowBookshelf">&#9112; Show Bookshelf</button>
 			</div>
 			<div class="span4">&nbsp;</div>
+		</div>
+	</div>
+	
+	<div class="container">
+		<div class="row-fluid">
+			<span id="loading" class="span12">
+				<img alt="loading" src="assets/loading.gif">
+			</span>
+			<div id="bookshelf" class="span12">
+				<script id="shelf-items" type="text/x-handlebars-template">
+					<h1>{{bookTitle}}</h1>
+					<h2>{{author}}</h2>
+					<h2>{{genre}}</h2>
+				</script>
+			</div>
 		</div>
 	</div>
 	<script type="text/javascript" src="js/script.js"></script>

@@ -1,6 +1,9 @@
 var regExAlphabet = /^\D\w*$/;
 var regExEmail = /^(.+)@(.+)$/;
 var regExPassword = /^.{8,}$/;
+var shelfTemplate = Handlebars.compile($("#shelf-items").html());
+var shelfContent = { bookTitle : "It wasn't a friendship...", author : "Kushal Pandya", genre : "Romance, Drama, Comedy" };
+
 
 var signupSym = $("#signup").find(".btn-symbol");
 
@@ -19,12 +22,13 @@ $("#signup").on("click", function(e) {
 $("#login").on("click", function(e) {
 	e.preventDefault();
 	$("#loginform").slideToggle(150);
+	$("#searchbox").slideLeftShow();
 });
 
 //Registration Form Validator
 $("input[type='text'],input[type='password'],input[name!='txtSearchKey']").on("blur", function() {
 	var currfield = $(this);
-	if(currfield.attr("id") === "txtFname" || currfield.attr("id") === "txtLname")
+	if(currfield.attr("name") === "txtFname" || currfield.attr("name") === "txtLname")
 	{
 		if(!regExAlphabet.test(currfield.val()))
 			currfield.parents().eq(1).addClass("error");
@@ -34,7 +38,7 @@ $("input[type='text'],input[type='password'],input[name!='txtSearchKey']").on("b
 			currfield.parents().eq(1).addClass("success");
 		}
 	}
-	else if(currfield.attr("id") === "txtEmail")
+	else if(currfield.attr("name") === "txtEmail")
 	{
 		if(!regExEmail.test(currfield.val()))
 			currfield.parents().eq(1).addClass("error");
@@ -44,7 +48,7 @@ $("input[type='text'],input[type='password'],input[name!='txtSearchKey']").on("b
 			currfield.parents().eq(1).addClass("success");
 		}
 	}
-	else if(currfield.attr("id") === "txtPass")
+	else if(currfield.attr("name") === "txtPass")
 	{
 		if(!regExPassword.test(currfield.val()))
 			currfield.parents().eq(1).addClass("error");
@@ -54,9 +58,9 @@ $("input[type='text'],input[type='password'],input[name!='txtSearchKey']").on("b
 			currfield.parents().eq(1).addClass("success");
 		}
 	}
-	else if(currfield.attr("id") === "txtCPass")
+	else if(currfield.attr("name") === "txtCPass")
 	{
-		if(currfield.val().length <= 0 || currfield.val() !== $("#txtPass").val())
+		if(currfield.val().length <= 0 || currfield.val() !== $("input[name='txtPass']").val())
 			currfield.parents().eq(1).addClass("error");
 		else
 		{
@@ -90,7 +94,49 @@ $("#btnLogin").on("click", function(e) {
 $("input[type='text'],input[type='password'],input[name!='txtSearchKey']").on("keydown", function() {
 	$(this).parents().eq(1).removeClass("error");
 	$(this).parents().eq(1).removeClass("success");
+	if($(this).attr("name") === "txtEmail")
+		$(this).parent().find(".help-block").remove();
 });
 
+$("#btnSubmit").on("click", function(e) {
+	e.preventDefault();
+	$.post("RegisterUser", $("#registerform").jsonify(), function(data) {
+		if(data.status === "success")
+		{
+			//$("#registerform").fadeTo(300,0).after("<h3 class='span6'>Registration Completed!<h3>");
+			alert("Registration Completed. Login using your email and password");
+			$("#btnReset").trigger("click");
+			$(".registration-form").slideToggle(500, function() {
+				$("#loginform").slideToggle(150, function() {
+					$("#loginEmail").focus();
+				});
+			});
+		}
+		else if(data.status === "invalid")
+		{
+			var emailblock = $("input[name='txtEmail']");
+			emailblock.after("<p class='help-block'>Email already registered, try using different Email address.</p>");
+			emailblock.parents().eq(1).removeClass("success");
+			emailblock.parents().eq(1).addClass("error");
+			emailblock.focus();
+		}
+	});
+});
 
+$("#btnReset").on("click", function(e) {
+	var formcontrols = $("#registerform").find(".control-group");
+	formcontrols.each(function() {
+		$(this).removeClass("success");
+		$(this).removeClass("error");
+	});
+	formcontrols.find("input[name='txtEmail']").siblings(".help-block").remove();
+});
+
+$("#btnShowBookshelf").on("click", function() {
+	$("#searchbox").slideLeftHide(function() {
+		//$("#loading").fadeIn();
+		//$("#loading").fadeOut();
+		$("#bookshelf").fadeIn().html(shelfTemplate(shelfContent));
+	});
+});
 
