@@ -56,9 +56,18 @@ public class BooksCatalog extends HttpServlet {
 				dm.open();
 				PaperFoodBook[] books = dm.getBooks(req_type);
 				JSONArray books_arr = new JSONArray();
+				JSONObject temp;
 				for(int i=0;i<books.length; i++)
 				{
-					books_arr.put(books[i].toJSONObject());
+					if((i+1)%5 == 0 && i != 0)
+					{
+						temp = new JSONObject();
+						temp = books[i].toJSONObject();
+						temp.put("break", "yes");
+						books_arr.put(temp);
+					}
+					else
+						books_arr.put(books[i].toJSONObject());
 				}
 				resp_type = "catalog";
 				resp.put("catalog", books_arr);

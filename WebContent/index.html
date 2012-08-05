@@ -98,51 +98,39 @@
 		</div>
 	</div>
 	
-	<div id="searchbox" class="container">
-		<div class="row-fluid logo">
-			<div class="span3">&nbsp;</div>
-			<div class="span6 logo-text">PaperFood</div>
-			<div class="span3">&nbsp;</div>
-		</div>
+	<div id="searcharea" class="container">
+		<div class="row-fluid logo-text">PaperFood</div>
 		<div class="row-fluid">
-			<div class="span12">
-				<div class="span3">&nbsp;</div>
-				<div class="span6">
+			<div class="container searchbox">
+				<div class="searcharea-controls">
 					<input type="text" name="txtSearchKey" class="txt-search" placeholder="Search for title, author or genre..."/>
 					<button type="submit" class="btn btn-success btn-search">Search</button>
 				</div>
-				<div class="span3">&nbsp;</div>
+				<div class="searcharea-controls">Or</div>
+				<div class="searcharea-controls"><button class="btn btn-inverse btn-cupboard" id="btnShowBookshelf">&#9112; Show Bookshelf</button></div>
 			</div>
-		</div>
-		<div class="row-fluid main-label">
-			<div class="span3">&nbsp;</div>
-			<div class="span6 main-label-text">Or</div>
-			<div class="span3">&nbsp;</div>
-		</div>
-		<div class="row-fluid cupboard-area">
-			<div class="span4">&nbsp;</div>
-			<div class="span4" style="text-align: center;">
-				<button class="btn btn-inverse btn-cupboard" id="btnShowBookshelf">&#9112; Show Bookshelf</button>
-			</div>
-			<div class="span4">&nbsp;</div>
 		</div>
 	</div>
 	
-	<div class="container">
-		<div class="row-fluid">
-			<span id="loading" class="span12">
-				<img alt="loading" src="assets/loading.gif">
-			</span>
-			<div id="bookshelf" class="span12">
-				<script id="shelf-items" type="text/x-handlebars-template">
+	<div id="shelfarea" class="container">
+		<div id="loading">
+			<img alt="loading" src="assets/loading.gif">
+		</div>
+		<div id="bookshelf" class="row-fluid">
+			<script id="shelf-items" type="text/x-handlebars-template">
+			<div class="books">
+				<ul>
 					{{#each this}}
-					<img src="assets/covers/{{isbn}}.jpg" alt="{{title}}" width="100px" height="150px"/>
-					<h1>{{title}}</h1>
-					<h2>{{author}}</h2>
-					<h2>{{genre}}</h2>
+					<li><a href="#" rel="{{isbn}}"><img src="assets/covers/{{isbn}}.jpg" width="100px" height="150px" alt="{{this}}"/></a></li>
+					{{#if break}}
+					<div class="container shelf-ply">
+						&nbsp;
+					</div>
+					{{/if}}
 					{{/each}}
-				</script>
+				</ul>
 			</div>
+			</script>
 		</div>
 	</div>
 	<script type="text/javascript" src="js/script.js"></script>

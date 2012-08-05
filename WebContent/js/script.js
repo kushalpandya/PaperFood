@@ -22,7 +22,6 @@ $("#signup").on("click", function(e) {
 $("#login").on("click", function(e) {
 	e.preventDefault();
 	$("#loginform").slideToggle(150);
-	$("#searchbox").slideLeftShow();
 });
 
 //Registration Form Validator
@@ -133,16 +132,19 @@ $("#btnReset").on("click", function(e) {
 });
 
 $("#btnShowBookshelf").on("click", function() {
-	$("#searchbox").slideLeftHide(function() {
-		//$("#loading").fadeIn();
-		//$("#loading").fadeOut();
+	$("#searcharea").slideLeftHide(function() {
+		$("#loading").fadeIn();
 		window.location.hash = hashShelf;
 		$.post("BooksCatalog", {
 			type : "none"
 		},
 		function(data) {
-			if(data.type === "catalog")
-				$("#bookshelf").fadeIn().html(shelfTemplate(data.catalog));
+			$("#loading").fadeOut(function() {
+				//if(data.type === "catalog")
+					$("#bookshelf").fadeIn().html(shelfTemplate(data.catalog));
+					console.log(data.catalog);
+				//$("#bookshelf").fadeIn();
+			});
 		});
 	});
 });
@@ -156,8 +158,11 @@ window.onhashchange = function(e) {
 	{
 		case "": //No Hash
 			$("#bookshelf").fadeOut(function() {
-				$("#searchbox").fadeIn();
+				$("#searcharea").fadeIn();
 			});
+			break;
+		case "bookshelf":
+			$("#btnShowBookshelf").trigger("click");
 			break;
 	    default: 
 	    	break;
