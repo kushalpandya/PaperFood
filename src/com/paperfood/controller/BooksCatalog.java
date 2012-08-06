@@ -48,22 +48,22 @@ public class BooksCatalog extends HttpServlet {
 		JSONObject resp = new JSONObject();
 		String req_type = request.getParameter("type");
 		String resp_type = "";
-		if(req_type.equalsIgnoreCase("none"))
+		if(req_type.equalsIgnoreCase("none")) //Request for all books.
 		{
 			DatabaseManager dm = new DatabaseManager();
 			try
 			{
 				dm.open();
-				PaperFoodBook[] books = dm.getBooks(req_type);
+				PaperFoodBook[] books = dm.getAllBooks(req_type);
 				JSONArray books_arr = new JSONArray();
 				JSONObject temp;
 				for(int i=0;i<books.length; i++)
 				{
-					if((i+1)%5 == 0 && i != 0)
+					if((i+1)%4 == 0 && i != 0)
 					{
 						temp = new JSONObject();
 						temp = books[i].toJSONObject();
-						temp.put("break", "yes");
+						temp.put("break", true);
 						books_arr.put(temp);
 					}
 					else
@@ -80,10 +80,28 @@ public class BooksCatalog extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		else// if(req_type.equalsIgnoreCase("search"))
+		else if(req_type.equalsIgnoreCase("isbn")) //Request for single book with given ISBN.
 		{
-			//String query = request.getParameter("query");
-			resp_type = "na";
+			String isbn = request.getParameter("value");
+			DatabaseManager dm = new DatabaseManager();
+			try
+			{
+				dm.open();
+				PaperFoodBook book = dm.getBook(isbn);
+				JSONObject bookjson = book.toJSONObject();
+				if(book.getQuantity() > 0)
+					bookjson.put("inStock", true);
+				
+				resp_type = "book";
+				resp.put("book", bookjson);
+				
+				dm.close();
+			}
+			catch (Exception e)
+			{
+				resp_type = "fail";
+				e.printStackTrace();
+			}
 		}
 		
 		try

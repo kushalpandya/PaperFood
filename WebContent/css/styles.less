@@ -182,7 +182,7 @@
 #bookshelf {
 	display: none;
 	margin: auto;
-	width: 75%;
+	width: 65%;
 	height: 60%;
 	margin-top: 3%;
 	margin-bottom: 3%;
@@ -193,7 +193,7 @@
 	.shelf-ply {
 		width: 100%;
 		margin-top: 4px;
-		margin-bottom: 8px;
+		margin-bottom: 20px;
 		background: #C87A29;
 		.simple-linear-gradient(#DF974D, #C87A29);
 		height: 20px;
@@ -203,7 +203,7 @@
 
 	.books {
 		margin-bottom: 3px;
-		padding-top: 10px;
+		margin-top: 15px;
 		ul {
 			margin: auto;
 			li {
@@ -215,6 +215,46 @@
 		}
 		img {
 			.box-shadow(0px,2px,4px);
+			
+			&:hover {
+				.box-shadow(0px,4px,10px);
+			}
+		}
+	}
+}
+
+#dlgBookInfo {
+	margin: auto;
+	
+	.book-cover {
+		float: left;
+		margin-left: 8%;
+		margin-top: 2%;
+		.box-shadow(0px,0px,3px);
+	}
+	
+	.book-title {
+		display: block;
+		float: right;
+		font-size: 24px;
+		font-weight: bold;
+		line-height: 24px;
+		width: 60%;
+		margin-right: 5%;
+		margin-top: 2%;
+	}
+	
+	.book-details {
+		list-style-type: none;
+		test-align: right;
+		margin-top: 12%;
+		margin-left: 35%;
+		font-size: 16px;
+		li {
+			margin-bottom: 10px;
+		}
+		li:nth-child(2) {
+			color: grey;
 		}
 	}
 }

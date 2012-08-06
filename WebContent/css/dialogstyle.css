@@ -1,0 +1,102 @@
+.dialog {
+	display: none;
+	margin: auto;
+}
+.ui-widget-overlay {
+	background: #0B0B0B;
+	opacity: 0.5;
+}
+.ui-dialog {
+	border: 4px solid white;
+	box-shadow: 0px 0px 50px #000;
+	padding-top: 0;
+	padding-left: 0;
+	padding-right: 0;
+	background: #393939;
+	color: #F7F7F7;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+	padding: 3px;
+	position: relative;
+	border: 0;
+	background: #393939;
+	margin-bottom: 10px;
+}
+
+.ui-dialog .ui-dialog-title {
+	float: left;
+	color: #1F1F1F;
+	font-size: 90%; /* to adopt for larger screen */
+	font-weight: 100;
+	margin: .1em 16px .1em .5em;
+	color: #F7F7F7;
+}
+
+.ui-dialog, .ui-widget, .ui-widget-content, .ui-corner-all, .ui-draggable {
+	border-radius: 15px;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+	padding: 15px;
+	border-radius: 40px;
+	margin-top: -25px;
+	margin-right: -15px;
+	background: #F7F7F7;
+}
+.ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus {
+	border: 0;
+	padding: 15px;
+	border-radius: 30px;
+	background: #FFFFFF;
+}
+
+.ui-dialog .ui-dialog-content {
+	background: #393939;
+	color: #F7F7F7;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+	margin: .5em .4em .5em 0;
+	cursor: pointer;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+	border-top: none;
+	padding: 2px;
+	background: inherit;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+	outline: none;
+	width: 130px;
+	padding: 1px;
+	padding-bottom: 3px;
+	border: 1px solid #AAA;
+	color: #ffffff;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	font-size: 16px;
+	background-color: #49afcd;
+  	*background-color: #2f96b4;
+  	background-image: -ms-linear-gradient(top, #5bc0de, #2f96b4);
+  	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5bc0de), to(#2f96b4));
+  	background-image: -webkit-linear-gradient(top, #5bc0de, #2f96b4);
+  	background-image: -o-linear-gradient(top, #5bc0de, #2f96b4);
+  	background-image: -moz-linear-gradient(top, #5bc0de, #2f96b4);
+  	background-image: linear-gradient(top, #5bc0de, #2f96b4);
+  	background-repeat: repeat-x;
+  	border-color: #2f96b4 #2f96b4 #1f6377;
+  	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	border-radius: 2px;
+}
+.ui-dialog .ui-dialog-buttonpane button:hover {
+	background-color: #2f96b4;
+  	*background-color: #2a85a0;
+}
+.ui-dialog .ui-dialog-buttonpane button:active {
+	background-color: #24748c \9;
+  	*background-color: #2a85a0;
+  	border-color: #393939;
+  	box-shadow: 0px 0px 4px #000 inset;
+}

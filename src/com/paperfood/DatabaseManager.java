@@ -133,7 +133,7 @@ public class DatabaseManager
 	 * @return PaperFoodBook[] for given criteria.
 	 * @throws SQLException
 	 */
-	public PaperFoodBook[] getBooks(String criteria) throws SQLException
+	public PaperFoodBook[] getAllBooks(String criteria) throws SQLException
 	{
 		if(criteria.equalsIgnoreCase("none"))
 		{
@@ -154,7 +154,39 @@ public class DatabaseManager
 				
 				books.add(temp_book);
 			}
+			rs.close();
+			st.close();
 			return books.toArray(new PaperFoodBook[books.size()]);
+		}
+		else
+			return null;
+	}
+	
+	/**
+	 * Gets Book based on given ISBN number.
+	 * @param isbn of the book.
+	 * @return PaperFoodBook object for this book.
+	 * @throws SQLException
+	 */
+	public PaperFoodBook getBook(String isbn) throws SQLException
+	{
+		PreparedStatement pst =  con.prepareStatement("SELECT * FROM books WHERE isbn like ?");
+		pst.setString(1, isbn);
+		ResultSet rs = pst.executeQuery();
+		if(rs.next())
+		{
+			PaperFoodBook book = new PaperFoodBook();
+			book.setId(rs.getInt("b_id"));
+			book.setISBN(rs.getString("isbn"));
+			book.setTitle(rs.getString("title"));
+			book.setAuthor(rs.getString("author"));
+			book.setGenre(rs.getString("genre"));
+			book.setPrice(rs.getFloat("price"));
+			book.setQuantity(rs.getInt("qty"));
+			
+			rs.close();
+			pst.close();
+			return book;
 		}
 		else
 			return null;

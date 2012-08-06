@@ -2,6 +2,9 @@ var regExAlphabet = /^\D\w*$/;
 var regExEmail = /^(.+)@(.+)$/;
 var regExPassword = /^.{8,}$/;
 var shelfTemplate = Handlebars.compile($("#shelf-items").html());
+var bookinfoTemplate = Handlebars.compile($("#book-info").html());
+
+var dlgBookInfo = $("#dlgBookInfo");
 
 var hashShelf = "bookshelf";
 
@@ -140,14 +143,48 @@ $("#btnShowBookshelf").on("click", function() {
 		},
 		function(data) {
 			$("#loading").fadeOut(function() {
-				//if(data.type === "catalog")
+				if(data.type === "catalog")
+				{
 					$("#bookshelf").fadeIn().html(shelfTemplate(data.catalog));
 					console.log(data.catalog);
+				}
 				//$("#bookshelf").fadeIn();
 			});
 		});
 	});
 });
+
+$("#bookshelf ul li a").live("click", function(e) {
+	e.preventDefault();
+	var referer = $(this);
+	//$("body").mask("Loading...");
+	$.post("BooksCatalog", {
+		type : "isbn",
+		value : referer.attr("rel")
+	},
+	function(data) {
+		//$("body").unmask();
+		if(data.type === "book")
+			showBookDialog(data.book);
+	});
+});
+
+function showBookDialog(JSONBook)
+{
+	dlgBookInfo.html(bookinfoTemplate(JSONBook));
+	dlgBookInfo.dialog({
+		modal: true,
+		resizable: false,
+		//draggable: false,
+		height: 350,
+		width: 600,
+		show: "fade",
+		hide: "fade",
+		buttons: {
+			"Add to Cart" : function() { $(this).dialog("close"); },
+		}
+	});
+}
 
 function getLocationHash() {
 	  return window.location.hash.substring(1);

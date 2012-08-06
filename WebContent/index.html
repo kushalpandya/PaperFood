@@ -7,8 +7,11 @@
 <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
 <link type="text/css" rel="stylesheet" href="css/bootstrap.css" media="all">
 <link type="text/css" rel="stylesheet" href="css/bootstrap-responsive.css" media="all">
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.22.css" media="all" />
 <link type="text/css" rel="stylesheet" href="css/styles.css" media="all">
 <link type="text/css" rel="stylesheet" href="css/tipsy.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/dialogstyle.css" media="all"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.loadmask.css" media="all"/>
 <link rel="stylesheet/less" href="css/styles.less" media="all" />
 <script type="text/javascript" src="js/less-1.3.0.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
@@ -121,7 +124,7 @@
 			<div class="books">
 				<ul>
 					{{#each this}}
-					<li><a href="#" rel="{{isbn}}"><img src="assets/covers/{{isbn}}.jpg" width="100px" height="150px" alt="{{this}}"/></a></li>
+					<li><a href="#" rel="{{isbn}}" title="{{title}}"><img src="assets/covers/{{isbn}}.jpg" width="100px" height="150px" alt="{{title}}"/></a></li>
 					{{#if break}}
 					<div class="container shelf-ply">
 						&nbsp;
@@ -133,6 +136,27 @@
 			</script>
 		</div>
 	</div>
+	
+	<div id="dlgBookInfo" class="dialog">
+		<script id="book-info" type="text/x-handlebars-template">
+			<div class="row-fluid">
+				<img src="assets/covers/{{isbn}}.jpg" width="120px" height="170px" alt="{{title}}" class="book-cover"/>
+				<span class="book-title">{{title}}</span>
+				<ul class="book-details">
+					<li>by <b>{{author}}</b></li>
+					<li>{{genre}}</li>
+					<li>&#8377 {{price}}.00</li>
+					{{#if inStock}}
+					<li>Available</li>
+					{{else}}
+					<li>Out of Stock</li>
+					{{/if}}
+				</ul>
+			</div>
+		</script>
+	</div>
 	<script type="text/javascript" src="js/script.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.8.22.min.js"></script>
+	<script type="text/javascript" src="js/jquery.loadmask.min.js"></script>
 </body>
 </html>
