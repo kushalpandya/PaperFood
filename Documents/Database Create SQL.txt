@@ -17,8 +17,8 @@ books
 
 CREATE TABLE books(
 	b_id integer PRIMARY KEY AUTOINCREMENT,
-	isbn varchar(30),
-	title varchar(30),
+	isbn varchar(10),
+	title varchar(50),
 	author varchar(30),
 	genre varchar(100),
 	qty integer,
@@ -68,8 +68,8 @@ books
 
 CREATE TABLE books(
 	b_id int(4) NOT NULL AUTO_INCREMENT,
-	isbn varchar(30),
-	title varchar(30),
+	isbn varchar(10),
+	title varchar(50),
 	author varchar(30),
 	genre varchar(100),
 	qty int(3),
