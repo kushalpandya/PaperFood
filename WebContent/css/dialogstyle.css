@@ -90,13 +90,20 @@
   	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 	border-radius: 2px;
 }
+
+.ui-dialog .ui-dialog-buttonpane button.disabled {
+	background-color: #9DBCC5;
+}
+
 .ui-dialog .ui-dialog-buttonpane button:hover {
 	background-color: #2f96b4;
   	*background-color: #2a85a0;
 }
 .ui-dialog .ui-dialog-buttonpane button:active {
-	background-color: #24748c \9;
-  	*background-color: #2a85a0;
   	border-color: #393939;
-  	box-shadow: 0px 0px 4px #000 inset;
+  	box-shadow: inset 0px 0px 4px #000;
+}
+.ui-dialog .ui-dialog-buttonpane button.disabled:active {
+  	border-color: #393939;
+  	box-shadow: inset 0px 0px 0px #000;
 }

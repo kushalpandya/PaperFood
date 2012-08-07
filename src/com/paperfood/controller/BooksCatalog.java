@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +46,7 @@ public class BooksCatalog extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		PrintWriter out = response.getWriter();
+		HttpSession session = request.getSession(true);
 		JSONObject resp = new JSONObject();
 		String req_type = request.getParameter("type");
 		String resp_type = "";
@@ -91,6 +93,10 @@ public class BooksCatalog extends HttpServlet {
 				JSONObject bookjson = book.toJSONObject();
 				if(book.getQuantity() > 0)
 					bookjson.put("inStock", true);
+				
+				String useremail = (String) session.getAttribute("paperfooduseremail");
+				resp.put("activeLogin", useremail != null);
+					
 				
 				resp_type = "book";
 				resp.put("book", bookjson);

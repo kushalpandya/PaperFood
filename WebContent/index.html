@@ -21,6 +21,7 @@
 <script type="text/javascript" src="js/jsonify.js"></script>
 <script type="text/javascript">
 	$(function() {
+		$("#logout, #cart").hide();
 		less.env = "development";
 		less.watch();
 		
@@ -28,6 +29,8 @@
 	        trigger: 'focus', 
 	        gravity: 'w'
 	    });
+		
+		doAutoLogin();
 		
 		if(window.location.hash.substring(1) === "bookshelf")
 			$("#btnShowBookshelf").trigger("click");
@@ -85,18 +88,20 @@
 		</div>
     	<div class="headerbar-right">
         	<div class="headerbar-buttons">
-            	<a href="#" id="signup" class="btn btn-info" >Sign-up&nbsp;<span class="btn-symbol">&#11015;</span></a>
+        		<a href="#" id="cart" class="btn btn-success" >Cart Items&nbsp;(<span class="item-count">0</span>)</a>
+				<a href="#" id="signup" class="btn btn-info" >Sign-up&nbsp;<span class="btn-symbol">&#11015;</span></a>
             	<a href="#" id="login" class="btn btn-info" >Login&nbsp;<span class="btn-symbol">&raquo;</span></a>
+            	<a href="#" id="logout" class="btn btn-info" >Logout&nbsp;<span class="btn-symbol">&#10006;</span></a>
             </div>
-            <form id="loginform" class="well form-inline">
-        		<input id="loginEmail" type="text" class="input-medium" placeholder="Email">
-        		<input id="loginPass" type="password" class="input-medium" placeholder="Password">
+            <form name="loginform" id="loginform" class="well form-inline">
+        		<input id="loginEmail" type="text" class="input-medium" placeholder="Email" name="loginEmail">
+        		<input id="loginPass" type="password" class="input-medium" placeholder="Password" name="loginPass">
         		<label id="loginmsg" class="pass-valid">Invalid Email or Password</label>
         		<label class="checkbox">
-          			<input type="checkbox"> Remember me
+          			<input type="checkbox" name="loginRemember"> Remember me
         		</label>
         		<label>&nbsp;</label>
-        		<button type="submit" class="btn btn-primary" id="btnLogin">Sign in</button>
+        		<button type="submit" class="btn btn-primary" id="btnLogin"><img class="login-loader" src='./assets/loading_small.gif'/> Sign in</button>
       		</form>
 		</div>
 	</div>
