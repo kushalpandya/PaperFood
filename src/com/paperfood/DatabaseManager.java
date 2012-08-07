@@ -4,14 +4,13 @@
 package com.paperfood;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -96,16 +95,21 @@ public class DatabaseManager
 		
 		//Create a new order
 		PreparedStatement pst = con.prepareStatement("INSERT INTO orders(u_id, order_date, status) VALUES(?,?,?)");
+		ResultSet rs;
 		pst.setInt(1, order.getUser().getId());
-		pst.setString(2, getCurrentDate());
+		pst.setDate(2, getCurrentDate());
 		pst.setString(3, "PROCESSING");
 		pst.executeUpdate();
 		
 		//Get Last Inserted Order's ID
 		Statement st = con.createStatement();
-		ResultSet rs = st.executeQuery("SELECT last_insert_rowid()");
+		if(DRIVER.contains("sqlite")) //Do it for SQLite
+			rs = st.executeQuery("SELECT last_insert_rowid()");
+		else						//Do it for MySQL
+			rs = st.executeQuery("SELECT LAST_INSERT_ID()");
+		
 		rs.next();
-		last_id = rs.getInt(0);
+		last_id = rs.getInt(1);
 		rs.close();
 		st.close();
 		
@@ -260,6 +264,32 @@ public class DatabaseManager
 	}
 	
 	/**
+	 * Returns PaperFoodUser object for given Email.
+	 * @param email Address of login user.
+	 * @param password MD5 hash of password sent from user.
+	 * @return PaperFoodUser object is login is valid, null if invalid.
+	 * @throws SQLException
+	 */
+	public Object getLoggedUserByEmail(String email) throws SQLException
+	{
+		PreparedStatement pst = con.prepareStatement("SELECT * FROM users WHERE email = ?");
+		pst.setString(1, email);
+		ResultSet rs = pst.executeQuery();
+		if(rs.next())
+		{
+			PaperFoodUser user = new PaperFoodUser();
+			user.setId(rs.getInt("u_id"));
+			user.setFirstName(rs.getString("fname"));
+			user.setLastName(rs.getString("lname"));
+			user.setEmail(rs.getString("email"));
+			
+			return user;
+		}
+		else
+			return null;
+	}
+	
+	/**
 	 * Closes this connection with PaperFood Database.
 	 * @throws SQLException
 	 */
@@ -272,10 +302,11 @@ public class DatabaseManager
 	 * Gets current Date and Time in DD-MM-YYYY HH:mm:ss format.
 	 * @return String date.
 	 */
-	private String getCurrentDate()
+	private Date getCurrentDate()
 	{
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-DD-yyyy HH:mm:ss");
-		Date now = new Date();
-		return sdf.format(now);
+		//SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		Date now = new Date(System.currentTimeMillis());
+		//return sdf.format(now);
+		return now;
 	}
 }

@@ -1,12 +1,15 @@
 var regExAlphabet = /^\D\w*$/;
 var regExEmail = /^(.+)@(.+)$/;
 var regExPassword = /^.{8,}$/;
+
 var shelfTemplate = Handlebars.compile($("#shelf-items").html());
 var bookinfoTemplate = Handlebars.compile($("#book-info").html());
+var cartinfoTemplate = Handlebars.compile($("#cart-info").html());
 
 var dlgBookInfo = $("#dlgBookInfo");
+var dlgCartInfo = $("#dlgCartInfo");
 
-var cartitemcount = 0;
+var itemCount = $(".item-count");
 
 var loginmsg = $("#loginmsg");
 var loginloader = $(".login-loader");
@@ -146,6 +149,46 @@ $("#logout").live("click", function(e) {
 	});
 });
 
+$("#cart").live("click", function(e) {
+	e.preventDefault();
+	$.post("CartManager", {
+		type : "cartinfo"
+	},
+	function(data) {
+		if(data.status === "success")
+			showCheckoutDialog(data.cartinfo);
+	});
+});
+
+function showCheckoutDialog(cartinfo)
+{
+	dlgCartInfo.html(cartinfoTemplate(cartinfo));
+	dlgCartInfo.dialog({
+		modal: true,
+		resizable: false,
+		//draggable: false,
+		height: 350,
+		width: 600,
+		show: "fade",
+		hide: "fade",
+		buttons: {
+			"Checkout" : function() {
+				$.post("CartManager", {
+					type : "checkout"
+				},
+				function(data) {
+					console.log(data);
+					if(data.status === "success")
+					{
+						alert("Your order has been placed");
+						dlgCartInfo.dialog("close");
+					}
+				});
+			},
+		}
+	});
+}
+
 $("input[type='text'],input[type='password'],input[name!='txtSearchKey']").on("keydown", function() {
 	$(this).parents().eq(1).removeClass("error");
 	$(this).parents().eq(1).removeClass("success");
@@ -236,8 +279,17 @@ function showBookDialog(JSONBook, loginstatus)
 		hide: "fade",
 		buttons: {
 			"Add to Cart" : function() {
-				$(".item-count").text(++cartitemcount);
-				$(this).dialog("close");
+				$.post("CartManager", {
+					type : "addtocart",
+					isbn : dlgBookInfo.find("img").data("isbn")
+				},
+				function(data) {
+					if(data.status === "success")
+					{
+						itemCount.text(data.count);
+						dlgBookInfo.dialog("close");
+					}
+				});
 			},
 		}
 	});

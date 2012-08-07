@@ -14,10 +14,12 @@ public class PaperFoodOrder
 	private int id;
 	private PaperFoodUser user;
 	private HashMap<Integer, Integer> cart;
+	private int itemcount;
 	
 	public PaperFoodOrder()
 	{
 		this.cart = new HashMap<Integer, Integer>();
+		this.itemcount = 0;
 	}
 	
 	/**
@@ -49,6 +51,10 @@ public class PaperFoodOrder
 		this.user = user;
 	}
 	
+	/**
+	 * Add a book to cart.
+	 * @param book PaperFoodBook to be added to the cart.
+	 */
 	public void addBook(PaperFoodBook book)
 	{
 		if(cart.containsKey(book.getId()))
@@ -58,10 +64,25 @@ public class PaperFoodOrder
 		}
 		else
 			cart.put(book.getId(), 1);
+		
+		this.itemcount++;
 	}
 	
+	/**
+	 * Get cart having all the books.
+	 * @return HashMap for cart having books.
+	 */
 	public HashMap<Integer, Integer> getBooks()
 	{
 		return cart;
+	}
+	
+	/**
+	 * Get total number of items in the cart.
+	 * @return int total items in the cart.
+	 */
+	public int getItemCount()
+	{
+		return this.itemcount;
 	}
 }

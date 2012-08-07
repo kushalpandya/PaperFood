@@ -145,7 +145,7 @@
 	<div id="dlgBookInfo" class="dialog">
 		<script id="book-info" type="text/x-handlebars-template">
 			<div class="row-fluid">
-				<img src="assets/covers/{{isbn}}.jpg" width="120px" height="170px" alt="{{title}}" class="book-cover"/>
+				<img src="assets/covers/{{isbn}}.jpg" width="120px" height="170px" alt="{{title}}" class="book-cover" data-isbn="{{isbn}}"/>
 				<span class="book-title">{{title}}</span>
 				<ul class="book-details">
 					<li>by <b>{{author}}</b></li>
@@ -157,6 +157,23 @@
 					<li>Out of Stock</li>
 					{{/if}}
 				</ul>
+			</div>
+		</script>
+	</div>
+	
+	<div id="dlgCartInfo" class="dialog">
+		<script id="cart-info" type="text/x-handlebars-template">
+			<div class="row-fluid">
+				<table class="table table-bordered">
+					<tr>
+						<td>Total Books</td>
+						<td>{{totalItems}}</td>
+					</tr>
+					<tr>
+						<td>Total Amount</td>
+						<td>Rs. {{totalAmount}}</td>
+					</tr>
+				</table>
 			</div>
 		</script>
 	</div>
