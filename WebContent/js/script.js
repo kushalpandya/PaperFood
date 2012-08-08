@@ -15,6 +15,7 @@ var loginmsg = $("#loginmsg");
 var loginloader = $(".login-loader");
 
 var hashShelf = "bookshelf";
+var hashSearch = "search?";
 
 var signupSym = $("#signup").find(".btn-symbol");
 
@@ -32,7 +33,9 @@ $("#signup").on("click", function(e) {
 //Login Form Drawer
 $("#login").on("click", function(e) {
 	e.preventDefault();
-	$("#loginform").slideToggle(150);
+	$("#loginform").slideToggle(150, function() {
+		$(this).find("#loginEmail").focus();
+	});
 });
 
 //Registration Form Validator
@@ -116,7 +119,6 @@ $("#btnLogin").on("click", function(e) {
 				$("#loginform").slideToggle(150, function() {
 					$("#login, #signup").hide();
 					$("#logout, #cart").show();
-					alert("You've logged in successfully!");
 				});
 			}
 			else if(data.status === "invalid")
@@ -166,7 +168,7 @@ function showCheckoutDialog(cartinfo)
 	dlgCartInfo.dialog({
 		modal: true,
 		resizable: false,
-		//draggable: false,
+		title: "Checkout",
 		height: 350,
 		width: 600,
 		show: "fade",
@@ -251,6 +253,27 @@ $("#btnShowBookshelf").on("click", function() {
 	});
 });
 
+$("#btnSearch").on("click", function() {
+	var key = $("input[name='txtSearchKey']").val();
+	$.post("BooksCatalog", {
+		type : "search",
+		searchKey : key
+	},
+	function(data) {
+		if(data.type === "result")
+		{
+			window.location.hash = hashSearch+key;
+			$("#searcharea").slideLeftHide(function() {
+				$("#bookshelf").fadeIn().html(shelfTemplate(data.result));
+			});
+		}
+		else if(data.type === "empty")
+			alert("No items match with your query!");
+		else
+			alert("Error occurred while connecting PaperFood.");
+	});
+});
+
 $("#bookshelf ul li a").live("click", function(e) {
 	e.preventDefault();
 	var referer = $(this);
@@ -317,6 +340,15 @@ function doAutoLogin()
 	}
 	else
 	{
+		$.post("CartManager", {
+			type : "lastcartinfo",
+			isbn : dlgBookInfo.find("img").data("isbn")
+		},
+		function(data) {
+			if(data.status === "success")
+				itemCount.text(data.count);
+		});
+		
 		$.post("Authenticate", {
 			type : "sessionlogin"
 		},
@@ -328,6 +360,27 @@ function doAutoLogin()
 			}
 		});
 	}
+}
+
+function showSearchResults(key)
+{
+	$.post("BooksCatalog", {
+		type : "search",
+		searchKey : key
+	},
+	function(data) {
+		if(data.type === "result")
+		{
+			window.location.hash = hashSearch+key;
+			$("#searcharea").slideLeftHide(function() {
+				$("#bookshelf").fadeIn().html(shelfTemplate(data.result));
+			});
+		}
+		else if(data.type === "empty")
+			$("#loading").parent().append("<h1 align='center' style='color: white; text-align: center; margin-top: 10%;'>No items match with your query!</h1>");
+		else
+			$("#loading").parent().append("<h1 align='center' style='color: white; text-align: center; margin-top: 10%;'>Oops! something went wrong while connecting PaperFood, try again later.</h1>");
+	});
 }
 
 function getLocationHash() {
@@ -375,18 +428,19 @@ function getCookie( check_name ) {
 }
 
 window.onhashchange = function(e) {
-	switch(getLocationHash())
+	if(getLocationHash() === "")
 	{
-		case "": //No Hash
-			$("#bookshelf").fadeOut(function() {
-				$("#searcharea").fadeIn();
-			});
-			break;
-		case "bookshelf":
-			$("#btnShowBookshelf").trigger("click");
-			break;
-	    default: 
-	    	break;
+		$("#bookshelf").fadeOut(function() {
+			$("#searcharea").fadeIn();
+		});
+	}
+	else if(getLocationHash() === "bookshelf")
+	{
+		$("#btnShowBookshelf").trigger("click");
+	}
+	else if(getLocationHash().split("?")[0] === "search")
+	{
+		showSearchResults(getLocationHash().split("?")[1]);
 	}
 };
 

@@ -84,12 +84,31 @@ public class DatabaseManager
 	}
 	
 	/**
+	 * Gets price for a given book id.
+	 * @param book_id ID of the book.
+	 * @return float price of the book.
+	 * @throws SQLException
+	 */
+	public float getBookPrice(int book_id) throws SQLException
+	{
+		PreparedStatement pst = con.prepareStatement("SELECT price FROM books WHERE b_id = ?");
+		pst.setInt(1, book_id);
+		ResultSet rs = pst.executeQuery();
+		rs.next();
+		float amount = rs.getFloat(1);
+		rs.close();
+		pst.close();
+		return amount;
+	}
+	
+	/**
 	 * Inserts new order in PaperFood Database.
 	 * @param order PaperFoodOrder
+	 * @return int Order ID for this Order.
 	 * @throws SQLException
 	 */
 	@SuppressWarnings("rawtypes")
-	public void insertOrder(PaperFoodOrder order) throws SQLException
+	public int insertOrder(PaperFoodOrder order) throws SQLException
 	{
 		int currKey, last_id;
 		
@@ -129,6 +148,27 @@ public class DatabaseManager
 			pst.executeUpdate();
 		}
 		pst.close();
+		return last_id;
+	}
+	
+	/**
+	 * Get total payable amount for given order ID of given user ID.
+	 * @param user_id User ID.
+	 * @param order_id Order ID.
+	 * @return float total payable amount.
+	 * @throws SQLException
+	 */
+	public float getOrderAmount(int user_id, int order_id) throws SQLException
+	{
+		PreparedStatement pst = con.prepareStatement("SUM sum(od.qty * b.price) FROM orders_detail od, books b, orders o WHERE od.b_id = b.b_id AND o.u_id = ? AND o.o_id = ?");
+		pst.setInt(1, user_id);
+		pst.setInt(2, order_id);
+		ResultSet rs = pst.executeQuery();
+		rs.next();
+		float amount = rs.getFloat(1);
+		rs.close();
+		pst.close();
+		return amount;
 	}
 	
 	/**
@@ -143,6 +183,50 @@ public class DatabaseManager
 		{
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery("SELECT * FROM books");
+			ArrayList<PaperFoodBook> books = new ArrayList<>();
+			PaperFoodBook temp_book;
+			while(rs.next())
+			{
+				temp_book = new PaperFoodBook();
+				temp_book.setId(rs.getInt("b_id"));
+				temp_book.setISBN(rs.getString("isbn"));
+				temp_book.setTitle(rs.getString("title"));
+				temp_book.setAuthor(rs.getString("author"));
+				temp_book.setGenre(rs.getString("genre"));
+				temp_book.setQuantity(rs.getInt("qty"));
+				temp_book.setPrice(rs.getFloat("price"));
+				
+				books.add(temp_book);
+			}
+			rs.close();
+			st.close();
+			return books.toArray(new PaperFoodBook[books.size()]);
+		}
+		else
+			return null;
+	}
+	
+	/**
+	 * Gets all books with given Book ID.
+	 * @param id Integer[] of Book ID.
+	 * @return PaperFoodBook[] for given IDs.
+	 * @throws SQLException
+	 */
+	public PaperFoodBook[] getBooksByIDs(Integer[] id) throws SQLException
+	{
+		if(id.length > 0)
+		{
+			String condition = "";
+			for(int i=0; i<id.length; i++)
+			{
+				if(i == id.length-1)
+					condition += "b_id = "+id[i];
+				else
+					condition += "b_id = "+id[i]+" OR ";
+			}
+			
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery("SELECT * FROM books WHERE "+condition);
 			ArrayList<PaperFoodBook> books = new ArrayList<>();
 			PaperFoodBook temp_book;
 			while(rs.next())

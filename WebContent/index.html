@@ -34,6 +34,8 @@
 		
 		if(window.location.hash.substring(1) === "bookshelf")
 			$("#btnShowBookshelf").trigger("click");
+		else if(window.location.hash.substring(1).split("?")[0] === "search")
+			showSearchResults(window.location.hash.substring(1).split("?")[1]);
 	});
 </script>
 </head>
@@ -112,7 +114,7 @@
 			<div class="container searchbox">
 				<div class="searcharea-controls">
 					<input type="text" name="txtSearchKey" class="txt-search" placeholder="Search for title, author or genre..."/>
-					<button type="submit" class="btn btn-success btn-search">Search</button>
+					<button id="btnSearch" type="submit" class="btn btn-success btn-search">Search</button>
 				</div>
 				<div class="searcharea-controls">Or</div>
 				<div class="searcharea-controls"><button class="btn btn-inverse btn-cupboard" id="btnShowBookshelf">&#9112; Show Bookshelf</button></div>

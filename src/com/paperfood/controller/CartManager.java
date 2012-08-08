@@ -87,11 +87,20 @@ public class CartManager extends HttpServlet {
 				resp.put("count", order.getItemCount());
 				status = "success";
 			}
+			else if(req_type.equalsIgnoreCase("lastcartinfo"))
+			{
+				String useremail = (String) session.getAttribute("paperfooduseremail");
+				if(useremail != null && order.getItemCount() > 0)
+				{
+					resp.put("count", order.getItemCount());
+					status = "success";
+				}
+			}
 			else if(req_type.equalsIgnoreCase("cartinfo"))
 			{
 				JSONObject cart_info = new JSONObject();
 				cart_info.put("totalItems", order.getItemCount());
-				cart_info.put("totalAmount", "1000");
+				cart_info.put("totalAmount", order.getAmount());
 				resp.put("cartinfo", cart_info);
 				status = "success";
 			}
@@ -101,7 +110,8 @@ public class CartManager extends HttpServlet {
 				{
 					DatabaseManager dm = new DatabaseManager();
 					dm.open();
-					dm.insertOrder(order);
+					int o_id = dm.insertOrder(order);
+					order.setId(o_id);
 					dm.close();
 					status = "success";
 				}

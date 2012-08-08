@@ -3,7 +3,12 @@
  */
 package com.paperfood.entity;
 
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+
+import com.paperfood.DatabaseManager;
 
 /**
  * @author Kushal Pandya <kushal.pandya04@gmail.com>
@@ -84,5 +89,31 @@ public class PaperFoodOrder
 	public int getItemCount()
 	{
 		return this.itemcount;
+	}
+	
+	/**
+	 * Gets total payable amount for this cart.
+	 * @return float total amount.
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	@SuppressWarnings("rawtypes")
+	public float getAmount() throws ClassNotFoundException, SQLException
+	{
+		float total = 0;
+		int currKey;
+		Set cartItems = cart.keySet();
+		Iterator itemsItr = cartItems.iterator();
+		DatabaseManager dm = new DatabaseManager();
+		dm.open();
+		
+		//Insert values in order_details
+		while(itemsItr.hasNext())
+		{
+			currKey = (Integer) itemsItr.next();
+			total += dm.getBookPrice(currKey);
+		}
+		
+		return total;
 	}
 }

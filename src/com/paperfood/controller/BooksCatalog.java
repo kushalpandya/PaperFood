@@ -2,6 +2,7 @@ package com.paperfood.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.paperfood.DatabaseManager;
+import com.paperfood.PaperFoodSearchIndex;
 import com.paperfood.entity.PaperFoodBook;
 
 /**
@@ -106,6 +108,52 @@ public class BooksCatalog extends HttpServlet {
 			catch (Exception e)
 			{
 				resp_type = "fail";
+				e.printStackTrace();
+			}
+		}
+		else if(req_type.equalsIgnoreCase("search")) //Request for books via Search.
+		{
+			String key = request.getParameter("searchKey");
+			PaperFoodSearchIndex index = new PaperFoodSearchIndex();
+			DatabaseManager dm = new DatabaseManager();
+			try
+			{
+				index.contruct();
+				Integer[] id_arr = index.getMatchingBookID(key);
+				if(id_arr.length > 0)
+				{
+					dm.open();
+					PaperFoodBook[] books = dm.getBooksByIDs(id_arr);
+					JSONArray books_arr = new JSONArray();
+					JSONObject temp;
+					for(int i=0;i<books.length; i++)
+					{
+						if((i+1)%4 == 0 && i != 0)
+						{
+							temp = new JSONObject();
+							temp = books[i].toJSONObject();
+							temp.put("break", true);
+							books_arr.put(temp);
+						}
+						else
+							books_arr.put(books[i].toJSONObject());
+					}
+					resp.put("result", books_arr);
+					resp_type = "result";
+				}
+				else
+					resp_type = "empty";
+			}
+			catch (ClassNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+			catch (JSONException e)
+			{
 				e.printStackTrace();
 			}
 		}
