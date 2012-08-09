@@ -1,3 +1,11 @@
+/**
+ * PaperFood v0.1
+ * 
+ * Author: Kushal Pandya < https://github.com/kushalpandya >
+ * License: GPLv3.
+ * 
+ * Search Provider Class.
+ */
 package com.paperfood;
 
 import java.sql.SQLException;

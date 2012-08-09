@@ -1,3 +1,11 @@
+/**
+ * PaperFood v0.1
+ * 
+ * Author: Kushal Pandya < https://github.com/kushalpandya >
+ * License: GPLv3.
+ * 
+ * Servlet implementation class Authenticate for Handling Login/Logout authentications.
+ */
 package com.paperfood.controller;
 
 import java.io.IOException;
@@ -19,9 +27,6 @@ import com.paperfood.DatabaseManager;
 import com.paperfood.entity.PaperFoodUser;
 import com.paperfood.security.MD5Hash;
 
-/**
- * Servlet implementation class Authenticate
- */
 @WebServlet(description = "Servlet to Authenticate user.", urlPatterns = { "/Authenticate" })
 public class Authenticate extends HttpServlet {
 	private static final long serialVersionUID = 1L;

@@ -1,3 +1,11 @@
+/**
+ * PaperFood v0.1
+ * 
+ * Author: Kushal Pandya < https://github.com/kushalpandya >
+ * License: GPLv3.
+ * 
+ * Class to get MD5 hash of String and File.
+ */
 package com.paperfood.security;
 
 import java.io.File;
@@ -17,12 +25,21 @@ public class MD5Hash
 	private BigInteger bigInt;
 	private String hash;
 	
+	/**
+	 * Create MD5Hash object and getInstance of MD5 algorithm.
+	 * @throws NoSuchAlgorithmException
+	 */
 	public MD5Hash() throws NoSuchAlgorithmException
 	{
 		md = MessageDigest.getInstance("MD5");
 		md.reset();
 	}
 	
+	/**
+	 * Get 32 character String representing MD5 Hash of given key.
+	 * @param key String for which Hash is to be generated.
+	 * @return String generated 32 character MD5 Hash.
+	 */
 	public String getStringHash(String key)
 	{
 		String source = key;
@@ -36,6 +53,13 @@ public class MD5Hash
 		return hash;
 	}
 	
+	/**
+	 * Get 32 character String representing MD5 Hash of given File source.
+	 * @param source File for which Hash is to be generated.
+	 * @return String generated 32 character MD5 Hash.
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	public String getFileHash(File source) throws FileNotFoundException, IOException
 	{
 		@SuppressWarnings("unused")

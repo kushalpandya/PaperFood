@@ -1,5 +1,10 @@
 /**
+ * PaperFood v0.1
  * 
+ * Author: Kushal Pandya < https://github.com/kushalpandya >
+ * License: GPLv3.
+ * 
+ * Entity class PaperFoodOrder to represent an Order by User in PaperFood.
  */
 package com.paperfood.entity;
 
@@ -10,10 +15,6 @@ import java.util.Set;
 
 import com.paperfood.DatabaseManager;
 
-/**
- * @author Kushal Pandya <kushal.pandya04@gmail.com>
- *
- */
 public class PaperFoodOrder
 {
 	private int id;

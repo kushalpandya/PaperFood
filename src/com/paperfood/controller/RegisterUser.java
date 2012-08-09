@@ -1,3 +1,11 @@
+/**
+ * PaperFood v0.1
+ * 
+ * Author: Kushal Pandya < https://github.com/kushalpandya >
+ * License: GPLv3.
+ * 
+ * Servlet implementation class RegisterUser for Handling Registration Process. 
+ */
 package com.paperfood.controller;
 
 import java.io.IOException;
@@ -16,9 +24,6 @@ import com.paperfood.DatabaseManager;
 import com.paperfood.entity.PaperFoodUser;
 import com.paperfood.security.MD5Hash;
 
-/**
- * Servlet implementation class RegisterUser
- */
 @WebServlet("/RegisterUser")
 public class RegisterUser extends HttpServlet
 {

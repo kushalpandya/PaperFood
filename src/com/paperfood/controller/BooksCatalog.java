@@ -1,3 +1,11 @@
+/**
+ * PaperFood v0.1
+ * 
+ * Author: Kushal Pandya < https://github.com/kushalpandya >
+ * License: GPLv3.
+ * 
+ * Servlet implementation class BooksCatalog for Handling Book Requests.
+ */
 package com.paperfood.controller;
 
 import java.io.IOException;
@@ -19,9 +27,6 @@ import com.paperfood.DatabaseManager;
 import com.paperfood.PaperFoodSearchIndex;
 import com.paperfood.entity.PaperFoodBook;
 
-/**
- * Servlet implementation class BooksCatalog
- */
 @WebServlet(description = "Servlet to Retrieve Books JSON based on given criteria", urlPatterns = { "/BooksCatalog" })
 public class BooksCatalog extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -99,7 +104,6 @@ public class BooksCatalog extends HttpServlet {
 				String useremail = (String) session.getAttribute("paperfooduseremail");
 				resp.put("activeLogin", useremail != null);
 					
-				
 				resp_type = "book";
 				resp.put("book", bookjson);
 				

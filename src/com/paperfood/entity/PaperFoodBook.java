@@ -1,15 +1,16 @@
 /**
+ * PaperFood v0.1
  * 
+ * Author: Kushal Pandya < https://github.com/kushalpandya >
+ * License: GPLv3.
+ * 
+ * Entity class PaperFoodBook to represent a Book in PaperFood.
  */
 package com.paperfood.entity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * @author Kushal Pandya <kushal.pandya04@gmail.com>
- *
- */
 public class PaperFoodBook
 {
 	private int id;

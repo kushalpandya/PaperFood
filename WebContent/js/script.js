@@ -1,3 +1,10 @@
+/*
+ * PaperFood v0.1
+ * 
+ * Author: Kushal Pandya < https://github.com/kushalpandya >
+ * License: GPLv3.
+ */
+
 var regExAlphabet = /^\D\w*$/;
 var regExEmail = /^(.+)@(.+)$/;
 var regExPassword = /^.{8,}$/;
@@ -134,6 +141,7 @@ $("#btnLogin").on("click", function(e) {
 	}
 });
 
+//Logout User
 $("#logout").live("click", function(e) {
 	e.preventDefault();
 	$.post("Authenticate", {
@@ -151,6 +159,7 @@ $("#logout").live("click", function(e) {
 	});
 });
 
+//Show Cart Items Dialog
 $("#cart").live("click", function(e) {
 	e.preventDefault();
 	$.post("CartManager", {
@@ -162,6 +171,7 @@ $("#cart").live("click", function(e) {
 	});
 });
 
+//Perform Checkout.
 function showCheckoutDialog(cartinfo)
 {
 	dlgCartInfo.html(cartinfoTemplate(cartinfo));
@@ -191,6 +201,7 @@ function showCheckoutDialog(cartinfo)
 	});
 }
 
+//Clear errors on changing invalid info in registration form.
 $("input[type='text'],input[type='password'],input[name!='txtSearchKey']").on("keydown", function() {
 	$(this).parents().eq(1).removeClass("error");
 	$(this).parents().eq(1).removeClass("success");
@@ -198,31 +209,41 @@ $("input[type='text'],input[type='password'],input[name!='txtSearchKey']").on("k
 		$(this).parent().find(".help-block").remove();
 });
 
+//Register User.
 $("#btnSubmit").on("click", function(e) {
 	e.preventDefault();
-	$.post("RegisterUser", $("#registerform").jsonify(), function(data) {
-		if(data.status === "success")
-		{
-			//$("#registerform").fadeTo(300,0).after("<h3 class='span6'>Registration Completed!<h3>");
-			alert("Registration Completed. Login using your email and password");
-			$("#btnReset").trigger("click");
-			$(".registration-form").slideToggle(500, function() {
-				$("#loginform").slideToggle(150, function() {
-					$("#loginEmail").focus();
+	if($(".registration-form").find(".error").length <= 0) //Prevent registration for invalid information, this is risky due to client-side validation if code is not obfuscated.
+	{
+		$.post("RegisterUser", $("#registerform").jsonify(), function(data) {
+			if(data.status === "success")
+			{
+				alert("Registration Completed. Login using your email and password");
+				$("#btnReset").trigger("click");
+				$(".registration-form").slideToggle(500, function() {
+					$("#loginform").slideToggle(150, function() {
+						$("#loginEmail").focus();
+					});
 				});
-			});
-		}
-		else if(data.status === "invalid")
-		{
-			var emailblock = $("input[name='txtEmail']");
-			emailblock.after("<p class='help-block'>Email already registered, try using different Email address.</p>");
-			emailblock.parents().eq(1).removeClass("success");
-			emailblock.parents().eq(1).addClass("error");
-			emailblock.focus();
-		}
-	});
+			}
+			else if(data.status === "invalid")
+			{
+				var emailblock = $("input[name='txtEmail']");
+				if(emailblock.parent().find(".help-block").length <= 0)
+					emailblock.after("<p class='help-block'>Email already registered, try using different Email address.</p>");
+				emailblock.parents().eq(1).removeClass("success");
+				emailblock.parents().eq(1).addClass("error");
+				emailblock.focus();
+			}
+		});
+	}
+	else
+	{
+		alert("Your registration information is invalid!");
+		$(".registration-form").find(".error").children().find("input").focus();
+	}
 });
 
+//Clear Registration Form.
 $("#btnReset").on("click", function(e) {
 	var formcontrols = $("#registerform").find(".control-group");
 	formcontrols.each(function() {
@@ -232,6 +253,7 @@ $("#btnReset").on("click", function(e) {
 	formcontrols.find("input[name='txtEmail']").siblings(".help-block").remove();
 });
 
+//Show entire Book Shelf.
 $("#btnShowBookshelf").on("click", function() {
 	$("#searcharea").slideLeftHide(function() {
 		$("#loading").fadeIn();
@@ -253,27 +275,20 @@ $("#btnShowBookshelf").on("click", function() {
 	});
 });
 
-$("#btnSearch").on("click", function() {
-	var key = $("input[name='txtSearchKey']").val();
-	$.post("BooksCatalog", {
-		type : "search",
-		searchKey : key
-	},
-	function(data) {
-		if(data.type === "result")
-		{
-			window.location.hash = hashSearch+key;
-			$("#searcharea").slideLeftHide(function() {
-				$("#bookshelf").fadeIn().html(shelfTemplate(data.result));
-			});
-		}
-		else if(data.type === "empty")
-			alert("No items match with your query!");
-		else
-			alert("Error occurred while connecting PaperFood.");
-	});
+//Perform search on Enter Key Press.
+$("input[name='txtSearchKey']").on("keydown", function(e) {
+	if(e.keyCode === 13)
+		$("#btnSearch").trigger("click");
 });
 
+//Request for search results.
+$("#btnSearch").on("click", function() {
+	var key = $("input[name='txtSearchKey']").val();
+	if(key !== "")
+		showSearchResults(key);
+});
+
+//Request for Book info.
 $("#bookshelf ul li a").live("click", function(e) {
 	e.preventDefault();
 	var referer = $(this);
@@ -289,6 +304,7 @@ $("#bookshelf ul li a").live("click", function(e) {
 	});
 });
 
+//Show individual book info.
 function showBookDialog(JSONBook, loginstatus)
 {
 	dlgBookInfo.html(bookinfoTemplate(JSONBook));
@@ -319,6 +335,7 @@ function showBookDialog(JSONBook, loginstatus)
 	$(".ui-dialog-buttonpane button:contains('Add to Cart')").attr("disabled", !loginstatus).addClass("disabled");
 }
 
+//Perform Cookie or Session based autologin.
 function doAutoLogin()
 {
 	var cookieval = getCookie("paperfood");
@@ -362,6 +379,7 @@ function doAutoLogin()
 	}
 }
 
+//Perform Search.
 function showSearchResults(key)
 {
 	$.post("BooksCatalog", {
@@ -377,16 +395,30 @@ function showSearchResults(key)
 			});
 		}
 		else if(data.type === "empty")
-			$("#loading").parent().append("<h1 align='center' style='color: white; text-align: center; margin-top: 10%;'>No items match with your query!</h1>");
+		{
+			window.location.hash = hashSearch+key;
+			$("#searcharea").slideLeftHide(function() {
+				var msgelement = $("#loading").parent();
+				if(msgelement.find("h1").length <= 0) 	//Need this to guard against multiple messages due to window.hash.change event execution of showSearchResults(key).
+					$("#loading").parent().append("<h1 align='center' style='color: white; text-align: center; margin-top: 10%;'>No items match with your query!</h1>");
+			});
+		}
 		else
-			$("#loading").parent().append("<h1 align='center' style='color: white; text-align: center; margin-top: 10%;'>Oops! something went wrong while connecting PaperFood, try again later.</h1>");
+		{
+			window.location.hash = hashSearch+key;
+			$("#searcharea").slideLeftHide(function() {
+				$("#loading").parent().append("<h1 align='center' style='color: white; text-align: center; margin-top: 10%;'>Oops! something went wrong while connecting PaperFood, try again later.</h1>");
+			});
+		}
 	});
 }
 
+//Get Hash from the URL.
 function getLocationHash() {
 	  return window.location.hash.substring(1);
 }
 
+//Get Cookie from Browser
 function getCookie( check_name ) {
     // first we'll split this cookie up into name/value pairs
     // note: document.cookie only returns name=value, not the other components
@@ -427,11 +459,13 @@ function getCookie( check_name ) {
     }
 }
 
+//Window Hash Change Event Handler.
 window.onhashchange = function(e) {
 	if(getLocationHash() === "")
 	{
 		$("#bookshelf").fadeOut(function() {
 			$("#searcharea").fadeIn();
+			$("#loading").parent().find("h1").remove();
 		});
 	}
 	else if(getLocationHash() === "bookshelf")

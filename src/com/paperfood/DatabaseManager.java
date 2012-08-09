@@ -1,5 +1,10 @@
 /**
+ * PaperFood v0.1
  * 
+ * Author: Kushal Pandya < https://github.com/kushalpandya >
+ * License: GPLv3.
+ * 
+ * Database Interaction Class.
  */
 package com.paperfood;
 
@@ -19,10 +24,6 @@ import com.paperfood.entity.PaperFoodBook;
 import com.paperfood.entity.PaperFoodOrder;
 import com.paperfood.entity.PaperFoodUser;
 
-/**
- * @author Kushal Pandya <kushal.pandya04@gmail.com>
- *
- */
 public class DatabaseManager
 {
 	private String DRIVER;
@@ -160,7 +161,7 @@ public class DatabaseManager
 	 */
 	public float getOrderAmount(int user_id, int order_id) throws SQLException
 	{
-		PreparedStatement pst = con.prepareStatement("SUM sum(od.qty * b.price) FROM orders_detail od, books b, orders o WHERE od.b_id = b.b_id AND o.u_id = ? AND o.o_id = ?");
+		PreparedStatement pst = con.prepareStatement("SELECT sum(od.qty * b.price) FROM orders_detail od, books b, orders o WHERE od.b_id = b.b_id AND o.u_id = ? AND o.o_id = ?");
 		pst.setInt(1, user_id);
 		pst.setInt(2, order_id);
 		ResultSet rs = pst.executeQuery();

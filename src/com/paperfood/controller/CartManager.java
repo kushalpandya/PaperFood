@@ -1,3 +1,11 @@
+/**
+ * PaperFood v0.1
+ * 
+ * Author: Kushal Pandya < https://github.com/kushalpandya >
+ * License: GPLv3.
+ * 
+ * Servlet implementation class CartManager for Handling Shopping Cart.
+ */
 package com.paperfood.controller;
 
 import java.io.IOException;
@@ -19,9 +27,6 @@ import com.paperfood.entity.PaperFoodBook;
 import com.paperfood.entity.PaperFoodOrder;
 import com.paperfood.entity.PaperFoodUser;
 
-/**
- * Servlet implementation class CartManager
- */
 @WebServlet(description = "Servlet to manage user's cart.", urlPatterns = { "/CartManager" })
 public class CartManager extends HttpServlet {
 	private static final long serialVersionUID = 1L;
